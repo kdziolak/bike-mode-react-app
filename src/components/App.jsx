@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import {Grid,CssBaseline} from '@material-ui/core'
+import {CssBaseline} from '@material-ui/core'
+import {Route} from 'react-router-dom'
 import Header from './Header'
-import GreetingsBlock from './GreetingBlock'
+import MainPage from './view/MainPage'
+import StartPracticePage from './view/StartPracticePage'
+
 
 class App extends Component {
   render() {
@@ -9,12 +12,9 @@ class App extends Component {
       <div>
         <CssBaseline/>
         <Header/>
-        <Grid container spacing={16} style={{marginTop: '15vh'}}>
-          <Grid item xs={12}>
-            <GreetingsBlock/>
-          </Grid>
-        </Grid>
-        </div>
+        <Route exact path='/' render={() => <MainPage/>}/>
+        <Route path='/rozpocznij-trening' render={() => <StartPracticePage/>}/>
+      </div>
     );
   }
 }

@@ -5,7 +5,7 @@ class GreetingsBlock extends Component {
   render() {
     return (
     <div>
-        <Typography variant='display1' align='center'><strong>Witaj nieznajomy!</strong></Typography>
+        <Typography variant='display1' align='center'><strong>Witaj rowerzysto!</strong></Typography>
         <Typography variant='headline' align='center'>Może mała przejażdżka?</Typography>
     </div>
     );
