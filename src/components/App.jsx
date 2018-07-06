@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {CssBaseline} from '@material-ui/core'
-import {HashRouter, Route} from 'react-router-dom'
+import { Route} from 'react-router-dom'
 import Header from './Header'
 import MainPage from './view/MainPage'
 import StartPracticePage from './view/StartPracticePage'
