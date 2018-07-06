@@ -15,13 +15,11 @@ class Header extends Component {
             drawerIsOpen: true
         })
     }
-
     handleCloseDrawer = () => {
         this.setState({
             drawerIsOpen: false
         })
     }
-
   render() {
     return (
     <div>

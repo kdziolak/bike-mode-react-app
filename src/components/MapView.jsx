@@ -9,7 +9,7 @@ class MapView extends Component {
             position: [null],
             distance: 0,
             oneKm: 10,
-            marker: []
+            marker: [],
         }
     }
     componentWillMount = () => {
