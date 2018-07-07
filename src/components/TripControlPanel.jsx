@@ -33,13 +33,13 @@ class TripControlPanel extends Component {
                         );
             this.setState({
                 position: [pos.coords.latitude, pos.coords.longitude],
-                distance: (Math.round((this.state.distance+dist) * 100)/100),
+                distance: (Math.round((this.state.distance+dist) * 100)/100)
             })
             if(this.state.distance >= this.state.distancePassed){
                 this.setState({
                     distancePassed: (this.state.distancePassed + 20)
                 })
-                this.props.sendMarkersToMap(this.state.distance)
+                this.props.sendMarkersToMap(this.state.distance, this.state.position)
             }
         }, err => {
             alert(err.message)
@@ -111,7 +111,7 @@ class TripControlPanel extends Component {
 
     tamplateCard = (props, i) => {
         return(
-            <Grid item xs={4}>
+            <Grid item xs={4} key={i}>
                 <Card style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <CardContent>
                         <Typography align='center' variant='title'>
@@ -179,7 +179,7 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        sendMarkersToMap: (distance) => sendMarkersToMap(distance)
+        sendMarkersToMap: (distance, position) => dispatch(sendMarkersToMap(distance, position))
     }
 }
 

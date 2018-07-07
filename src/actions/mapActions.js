@@ -1,6 +1,9 @@
-export function sendMarkersToMap (distance) {
+export function sendMarkersToMap (distance, position) {
     return {
         type: 'SEND_MARKERS',
-        payload: distance
+        payload: {
+            distance,
+            position
+        }
     }
 }
