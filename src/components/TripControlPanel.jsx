@@ -1,22 +1,49 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {Grid, Card, CardContent, CardActions, Typography, Button} from '@material-ui/core';
+import {Grid, Card, CardContent, Typography, Button} from '@material-ui/core';
+import {sendMarkersToMap} from '../actions/mapActions';
 
 class TripControlPanel extends Component {
     constructor(){
         super();
         this.state = {
-            position: [0, 0],
+            position: [],
             tripControlCard: [
                 'distance',
                 'time',
                 'speed'
             ],
             distance: 0,
-            getTime: 0,
-            oneKm: 100,
-            marker: [],
+            getTime: {
+                seconds: 0,
+                minutes: 0,
+                hours: 0
+            },
+            distancePassed: 20,
         }
+    }
+
+    watchGeoPosition = () => {
+        navigator.geolocation.watchPosition(pos => {
+            let dist = this.distance(
+                            !this.state.position[1] ? pos.coords.longitude : this.state.position[1],
+                            !this.state.position[0] ? pos.coords.latitude : this.state.position[0], 
+                            pos.coords.longitude,
+                            pos.coords.latitude
+                        );
+            this.setState({
+                position: [pos.coords.latitude, pos.coords.longitude],
+                distance: (Math.round((this.state.distance+dist) * 100)/100),
+            })
+            if(this.state.distance >= this.state.distancePassed){
+                this.setState({
+                    distancePassed: (this.state.distancePassed + 20)
+                })
+                this.props.sendMarkersToMap(this.state.distance)
+            }
+        }, err => {
+            alert(err.message)
+        }, {enableHighAccuracy: true,timeOut: Infinity, maximumAge: 10000})
     }
 
     distance = (lon1, lat1, lon2, lat2) => {
@@ -32,36 +59,54 @@ class TripControlPanel extends Component {
                 Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * 
                 Math.sin(dLon/2) * Math.sin(dLon/2); 
         let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-        let d = (R * c) * 1000; // Distance in km
+        let d = (R * c) * 1000; // Distance in m
         return d;
       }
 
     startPractitce = () =>{
         let startTime = new Date();
         setInterval(() => {
+            if(this.state.getTime.seconds === 59){
+                startTime = new Date();
+                this.setState({
+                    getTime: {
+                        ...this.state.getTime,
+                        minutes: (1 + this.state.getTime.minutes),
+                        seconds: 0
+                    } 
+                })
+            }
+            if(this.state.getTime.seconds === 59 && this.state.getTime.minutes === 59){
+                startTime = new Date();
+                this.setState({
+                    getTime: {
+                        hours: (1 + this.state.getTime.hours),
+                        minutes: 0,
+                        seconds: 0
+                    } 
+                })
+            }
+            if(this.state.getTime.seconds === 59 && this.state.getTime.minutes === 59 && this.state.getTime.hours === 23){
+                startTime = new Date();
+                this.setState({
+                    getTime: {
+                        hours: 0,
+                        minutes: 0,
+                        seconds: 0
+                    } 
+                })
+            }
             let durationTime = new Date();
             this.setState({
-                getTime: Math.round((durationTime - startTime)/1000, 3)
+                getTime: {
+                    ...this.state.getTime,
+                    seconds: Math.round((durationTime - startTime)/1000, 3)
+                } 
             })
         }, 1000)
-        setInterval(() => {
-            navigator.geolocation.getCurrentPosition(pos => {
-                let dist = this.distance(this.state.position[1], this.state.position[0] ,pos.coords.longitude, pos.coords.latitude);
-                this.setState({
-                    position: [pos.coords.latitude, pos.coords.longitude],
-                    distance: (this.state.distance+dist),
-                })
-                console.log(this.state.getTime)
-                if(this.state.distance >= this.state.oneKm){
-                    this.setState({
-                        marker: [...this.state.marker, this.state.distance],
-                        oneKm: (this.state.oneKm + 100)
-                    })
-                }
-            }, err => {
-                alert(err.message)
-            }, {enableHighAccuracy: true,timeOut: 200, maximumAge: 10000})
-        }, 30000)
+
+        this.watchGeoPosition();
+        
     }
 
     tamplateCard = (props, i) => {
@@ -74,6 +119,7 @@ class TripControlPanel extends Component {
                         </Typography>
                         <br/>
                         {(() => {
+                            let speed = ((this.state.distance / 1000) / (this.state.getTime * 3600));
                                 if(props === 'distance'){
                                     return(
                                         <Typography align='center' variant='headline'>
@@ -83,14 +129,14 @@ class TripControlPanel extends Component {
                                 }else if(props === 'time'){
                                     return(
                                         <Typography align='center' variant='headline'>
-                                            {this.state.getTime} <br/> sec
+                                            {`${this.state.getTime.hours < 10 ? ('0' + this.state.getTime.hours) : this.state.getTime.hours }:${this.state.getTime.minutes < 10 ? ('0' + this.state.getTime.minutes) : this.state.getTime.minutes }:${this.state.getTime.seconds < 10 ? ('0' + this.state.getTime.seconds) : this.state.getTime.seconds } `} <br/>
                                         </Typography>
                                     );
                                 }
                                 else if(props === 'speed'){
                                     return(
                                         <Typography align='center' variant='headline'>
-                                            {(this.state.distance / 1000) / (this.state.getTime * 3600) } <br/> km/h
+                                            { speed ? Math.round(speed, 2) : 0} <br/> km/h
                                         </Typography>
                                     );
                                 }
@@ -104,7 +150,7 @@ class TripControlPanel extends Component {
     }
   render() {
     return (
-            <Grid container spacing={16} style={{paddingLeft: '2vw', marginTop: '8vh'}} alignItems='center' justify='center'>
+            <Grid container spacing={16} style={{paddingLeft: '2vw', marginTop: '4vh'}} alignItems='center' justify='center'>
                 {this.state.tripControlCard.map(this.tamplateCard)}
                 <Button
                 style={{
@@ -131,9 +177,9 @@ const mapStateToProps = state => {
         
     }
 }
-const mapDispatchToProps = state => {
+const mapDispatchToProps = dispatch => {
     return {
-        
+        sendMarkersToMap: (distance) => sendMarkersToMap(distance)
     }
 }
 
