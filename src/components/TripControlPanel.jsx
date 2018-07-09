@@ -14,13 +14,23 @@ class TripControlPanel extends Component {
                 'speed'
             ],
             distance: 0,
+            speedTime: 0,
             getTime: {
                 seconds: 0,
                 minutes: 0,
                 hours: 0
             },
             distancePassed: 20,
+            measurementPoint: [],
+            changeBtn: true,
+            pauza: false
         }
+    }
+
+    pauzaBtnClick = () => {
+        this.setState({
+            pauza: !this.state.pauza
+        })
     }
 
     watchGeoPosition = () => {
@@ -33,11 +43,19 @@ class TripControlPanel extends Component {
                         );
             this.setState({
                 position: [pos.coords.latitude, pos.coords.longitude],
-                distance: (Math.round((this.state.distance+dist) * 100)/100)
+                distance: (Math.round((this.state.distance+dist) * 100)/100) + 20
             })
             if(this.state.distance >= this.state.distancePassed){
                 this.setState({
-                    distancePassed: (this.state.distancePassed + 20)
+                    distancePassed: (this.state.distancePassed + 20),
+                    measurementPoint: [
+                        ...this.state.measurementPoint,
+                        {
+                            time: `${this.state.getTime.hours < 10 ? ('0' + this.state.getTime.hours) : this.state.getTime.hours }:${this.state.getTime.minutes < 10 ? ('0' + this.state.getTime.minutes) : this.state.getTime.minutes }:${this.state.getTime.seconds < 10 ? ('0' + this.state.getTime.seconds) : this.state.getTime.seconds }`,
+                            distance: this.state.distance,
+                            speed: Math.round(((this.state.distance / 1000) / (this.state.speedTime * 3600)), 2)
+                        }
+                    ]
                 })
                 this.props.sendMarkersToMap(this.state.distance, this.state.position)
             }
@@ -65,45 +83,64 @@ class TripControlPanel extends Component {
 
     startPractitce = () =>{
         let startTime = new Date();
+        let timeToMeasureSpeed = startTime;
+        let durationTime;
+        let differenceTimes = 0;
+        let getDifferenceTimes = 0;
         setInterval(() => {
-            if(this.state.getTime.seconds === 59){
-                startTime = new Date();
+            if(!this.state.pauza){
+                if(differenceTimes !== 0){
+                    getDifferenceTimes += differenceTimes
+                }
+                if(this.state.getTime.seconds === 59){
+                    startTime = new Date();
+                    getDifferenceTimes = 0;
+                    this.setState({
+                        getTime: {
+                            ...this.state.getTime,
+                            minutes: (1 + this.state.getTime.minutes),
+                            seconds: 0
+                        } 
+                    })
+                }
+                if(this.state.getTime.seconds === 59 && this.state.getTime.minutes === 59){
+                    startTime = new Date();
+                    getDifferenceTimes = 0;
+                    this.setState({
+                        getTime: {
+                            hours: (1 + this.state.getTime.hours),
+                            minutes: 0,
+                            seconds: 0
+                        } 
+                    })
+                }
+                if(this.state.getTime.seconds === 59 && this.state.getTime.minutes === 59 && this.state.getTime.hours === 23){
+                    startTime = new Date();
+                    getDifferenceTimes = 0;
+                    this.setState({
+                        getTime: {
+                            hours: 0,
+                            minutes: 0,
+                            seconds: 0
+                        } 
+                    })
+                }
+                durationTime = new Date();
+                let countTime = Math.round((durationTime - startTime)/1000, 3);
                 this.setState({
                     getTime: {
                         ...this.state.getTime,
-                        minutes: (1 + this.state.getTime.minutes),
-                        seconds: 0
-                    } 
+                        seconds: (countTime - getDifferenceTimes)
+                    },
+                    speedTime: (durationTime - timeToMeasureSpeed),
+                    changeBtn: false
                 })
+                differenceTimes = 0;
+            }else{
+                differenceTimes = Math.ceil((new Date() - durationTime) / 1000);
             }
-            if(this.state.getTime.seconds === 59 && this.state.getTime.minutes === 59){
-                startTime = new Date();
-                this.setState({
-                    getTime: {
-                        hours: (1 + this.state.getTime.hours),
-                        minutes: 0,
-                        seconds: 0
-                    } 
-                })
-            }
-            if(this.state.getTime.seconds === 59 && this.state.getTime.minutes === 59 && this.state.getTime.hours === 23){
-                startTime = new Date();
-                this.setState({
-                    getTime: {
-                        hours: 0,
-                        minutes: 0,
-                        seconds: 0
-                    } 
-                })
-            }
-            let durationTime = new Date();
-            this.setState({
-                getTime: {
-                    ...this.state.getTime,
-                    seconds: Math.round((durationTime - startTime)/1000, 3)
-                } 
-            })
         }, 1000)
+   
 
         this.watchGeoPosition();
         
@@ -119,7 +156,7 @@ class TripControlPanel extends Component {
                         </Typography>
                         <br/>
                         {(() => {
-                            let speed = ((this.state.distance / 1000) / (this.state.getTime * 3600));
+                            let speed = ((this.state.distance / 1000) / (this.state.speedTime * 3600));
                                 if(props === 'distance'){
                                     return(
                                         <Typography align='center' variant='headline'>
@@ -150,22 +187,55 @@ class TripControlPanel extends Component {
     }
   render() {
     return (
-            <Grid container spacing={16} style={{paddingLeft: '2vw', marginTop: '4vh'}} alignItems='center' justify='center'>
+            <Grid container spacing={16} style={{paddingLeft: '2vw', marginTop: '2vh'}} alignItems='center' justify='center'>
                 {this.state.tripControlCard.map(this.tamplateCard)}
-                <Button
-                style={{
-                    marginTop: '5vh',
-                    width: '30%',
-                    height: '8vh'
-                }}
-                onClick={this.startPractitce}
-                variant='contained'
-                color='primary'
-                >
-                    <Typography variant='title' style={{color: 'white'}}>
-                        Start
-                    </Typography>
-                </Button>
+                { this.state.changeBtn ?
+                    <Button
+                    style={{
+                        marginTop: '5vh',
+                        width: '30%',
+                        height: '8vh'
+                    }}
+                    onClick={this.startPractitce}
+                    variant='contained'
+                    color='primary'
+                    >
+                        <Typography variant='title' style={{color: 'white'}}>
+                            Start
+                        </Typography>
+                    </Button> 
+                    : (
+                    <div>
+                    <Button
+                    style={{
+                        marginTop: '5vh',
+                        marginRight: '30px',
+                        width: '30%',
+                        height: '8vh'
+                    }}
+                    onClick={this.pauzaBtnClick}
+                    variant='contained'
+                    color='primary'
+                    >
+                        <Typography variant='title' style={{color: 'white'}}>
+                            {this.state.pauza ? 'Wznów' : 'Pauza'}
+                        </Typography>
+                    </Button>
+                    <Button
+                    style={{
+                        marginTop: '5vh',
+                        width: '50%',
+                        height: '8vh'
+                    }}
+                    onClick={this.startPractitce}
+                    variant='contained'
+                    color='secondary'
+                    >
+                        <Typography variant='title' style={{color: 'white'}}>
+                            Zakończ
+                        </Typography>
+                </Button> </div>)
+                }
             </Grid>
             
     );

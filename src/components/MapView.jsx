@@ -46,7 +46,7 @@ class MapView extends Component {
         );
     }else{
         return(
-            <div style={{marginTop: '15vh'}}>
+            <div style={{height: '25vh', marginTop: '15vh'}}>
                 <Typography align='center' variant='headline'>Ładowanie...<br/><br/><CircularProgress size={50} /></Typography>
             </div>
         );
