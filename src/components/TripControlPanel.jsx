@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Grid, Card, CardContent, Typography, Button} from '@material-ui/core';
+import { Redirect } from 'react-router-dom';
 import {sendMarkersToMap} from '../actions/mapActions';
+import StartPracticePage from './view/StartPracticePage';
 
 class TripControlPanel extends Component {
     constructor(){
@@ -20,11 +22,25 @@ class TripControlPanel extends Component {
                 minutes: 0,
                 hours: 0
             },
-            distancePassed: 20,
+            distancePassed: 50,
             measurementPoint: [],
             changeBtn: true,
-            pauza: false
+            pauza: false,
+            finishWorkoutBool: false
         }
+    }
+    
+    finishWorkout = () => {
+        new Promise((response, reject) => {
+            response(this.setState({
+                        pauza: true
+                    }))
+        }).then(() => {
+            this.setState({
+                finishWorkoutBool: true
+            })
+        })
+        
     }
 
     pauzaBtnClick = () => {
@@ -34,7 +50,13 @@ class TripControlPanel extends Component {
     }
 
     watchGeoPosition = () => {
-        navigator.geolocation.watchPosition(pos => {
+        let geoLoc = navigator.geolocation;
+        let watchID;
+        watchID = geoLoc.watchPosition(pos => {
+            if(this.state.pauza){
+               geoLoc.clearWatch(watchID);
+               return;
+            }
             let dist = this.distance(
                             !this.state.position[1] ? pos.coords.longitude : this.state.position[1],
                             !this.state.position[0] ? pos.coords.latitude : this.state.position[0], 
@@ -43,11 +65,11 @@ class TripControlPanel extends Component {
                         );
             this.setState({
                 position: [pos.coords.latitude, pos.coords.longitude],
-                distance: (Math.round((this.state.distance+dist) * 100)/100) + 20
+                distance: (Math.round((this.state.distance+dist) * 100)/100)
             })
             if(this.state.distance >= this.state.distancePassed){
                 this.setState({
-                    distancePassed: (this.state.distancePassed + 20),
+                    distancePassed: (this.state.distancePassed + 50),
                     measurementPoint: [
                         ...this.state.measurementPoint,
                         {
@@ -87,10 +109,12 @@ class TripControlPanel extends Component {
         let durationTime;
         let differenceTimes = 0;
         let getDifferenceTimes = 0;
-        setInterval(() => {
+        let intervalID;
+        intervalID = setInterval(() => {
             if(!this.state.pauza){
                 if(differenceTimes !== 0){
                     getDifferenceTimes += differenceTimes
+                    this.watchGeoPosition();
                 }
                 if(this.state.getTime.seconds === 59){
                     startTime = new Date();
@@ -136,14 +160,19 @@ class TripControlPanel extends Component {
                     changeBtn: false
                 })
                 differenceTimes = 0;
+                
             }else{
+                if(differenceTimes === 0){
+                    this.watchGeoPosition()
+                }
                 differenceTimes = Math.ceil((new Date() - durationTime) / 1000);
             }
-        }, 1000)
-   
+            if(this.state.finishWorkoutBool){
+                clearInterval(intervalID);
+            }
+        }, 1000)        
+        this.watchGeoPosition()
 
-        this.watchGeoPosition();
-        
     }
 
     tamplateCard = (props, i) => {
@@ -221,20 +250,22 @@ class TripControlPanel extends Component {
                             {this.state.pauza ? 'Wznów' : 'Pauza'}
                         </Typography>
                     </Button>
-                    <Button
-                    style={{
-                        marginTop: '5vh',
-                        width: '50%',
-                        height: '8vh'
-                    }}
-                    onClick={this.startPractitce}
-                    variant='contained'
-                    color='secondary'
-                    >
-                        <Typography variant='title' style={{color: 'white'}}>
-                            Zakończ
-                        </Typography>
-                </Button> </div>)
+                        <Button
+                            style={{
+                                marginTop: '5vh',
+                                width: '50%',
+                                height: '8vh'
+                            }}
+                            onClick={this.finishWorkout}
+                            variant='contained'
+                            color='secondary'
+                            >
+                                {this.state.finishWorkoutBool ? <Redirect to='koniec-treningu' /> : null}
+                                <Typography variant='title' style={{color: 'white'}}>
+                                    Zakończ
+                                </Typography>
+                        </Button>
+                 </div>)
                 }
             </Grid>
             
