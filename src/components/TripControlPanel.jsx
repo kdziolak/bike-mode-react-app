@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {Grid, Card, CardContent, Typography, Button} from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import {sendMarkersToMap} from '../actions/mapActions';
-import StartPracticePage from './view/StartPracticePage';
 
 class TripControlPanel extends Component {
     constructor(){
@@ -250,21 +249,21 @@ class TripControlPanel extends Component {
                             {this.state.pauza ? 'Wznów' : 'Pauza'}
                         </Typography>
                     </Button>
-                        <Button
-                            style={{
-                                marginTop: '5vh',
-                                width: '50%',
-                                height: '8vh'
-                            }}
-                            onClick={this.finishWorkout}
-                            variant='contained'
-                            color='secondary'
-                            >
-                                {this.state.finishWorkoutBool ? <Redirect to='koniec-treningu' /> : null}
-                                <Typography variant='title' style={{color: 'white'}}>
-                                    Zakończ
-                                </Typography>
-                        </Button>
+                    <Button
+                        style={{
+                            marginTop: '5vh',
+                            width: '50%',
+                            height: '8vh'
+                        }}
+                        onClick={this.finishWorkout}
+                        variant='contained'
+                        color='secondary'
+                        >
+                            {this.state.finishWorkoutBool ? <Redirect to='koniec-treningu' /> : null}
+                            <Typography variant='title' style={{color: 'white'}}>
+                                Zakończ
+                            </Typography>
+                    </Button>
                  </div>)
                 }
             </Grid>
