@@ -3,10 +3,12 @@ import thunk from "redux-thunk";
 import logger from "redux-logger";
 
 import map from './reducers/mapReducer';
+import summaryWorkout from './reducers/workoutSummaryReducer'
 
 export default createStore(
   combineReducers({
-    map
+    map,
+    summaryWorkout
   }),
   {},
   applyMiddleware(thunk, logger)

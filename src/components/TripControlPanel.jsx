@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Grid, Card, CardContent, Typography, Button} from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 import {sendMarkersToMap} from '../actions/mapActions';
+import {sendMeasurement} from '../actions/workoutSummaryActions'
 
 class TripControlPanel extends Component {
     constructor(){
@@ -21,7 +22,7 @@ class TripControlPanel extends Component {
                 minutes: 0,
                 hours: 0
             },
-            distancePassed: 50,
+            distancePassed: 20,
             measurementPoint: [],
             changeBtn: true,
             pauza: false,
@@ -34,7 +35,11 @@ class TripControlPanel extends Component {
             response(this.setState({
                         pauza: true
                     }))
-        }).then(() => {
+        })
+        .then(() => {
+            this.props.sendMeasurement(this.state.measurementPoint)
+        })
+        .then(() => {
             this.setState({
                 finishWorkoutBool: true
             })
@@ -64,17 +69,17 @@ class TripControlPanel extends Component {
                         );
             this.setState({
                 position: [pos.coords.latitude, pos.coords.longitude],
-                distance: (Math.round((this.state.distance+dist) * 100)/100)
+                distance: (Math.round((this.state.distance+dist) * 100)/100) + 20
             })
             if(this.state.distance >= this.state.distancePassed){
                 this.setState({
-                    distancePassed: (this.state.distancePassed + 50),
+                    distancePassed: (this.state.distancePassed + 20),
                     measurementPoint: [
                         ...this.state.measurementPoint,
                         {
                             time: `${this.state.getTime.hours < 10 ? ('0' + this.state.getTime.hours) : this.state.getTime.hours }:${this.state.getTime.minutes < 10 ? ('0' + this.state.getTime.minutes) : this.state.getTime.minutes }:${this.state.getTime.seconds < 10 ? ('0' + this.state.getTime.seconds) : this.state.getTime.seconds }`,
                             distance: this.state.distance,
-                            speed: Math.round(((this.state.distance / 1000) / (this.state.speedTime * 3600)), 2)
+                            averageSpeed: Math.round(((this.state.distance / 1000) / (this.state.speedTime * 3600)), 2)
                         }
                     ]
                 })
@@ -279,7 +284,8 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        sendMarkersToMap: (distance, position) => dispatch(sendMarkersToMap(distance, position))
+        sendMarkersToMap: (distance, position) => dispatch(sendMarkersToMap(distance, position)),
+        sendMeasurement: (measurement) => dispatch(sendMeasurement(measurement))
     }
 }
 
