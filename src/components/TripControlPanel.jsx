@@ -79,7 +79,8 @@ class TripControlPanel extends Component {
                         {
                             time: `${this.state.getTime.hours < 10 ? ('0' + this.state.getTime.hours) : this.state.getTime.hours }:${this.state.getTime.minutes < 10 ? ('0' + this.state.getTime.minutes) : this.state.getTime.minutes }:${this.state.getTime.seconds < 10 ? ('0' + this.state.getTime.seconds) : this.state.getTime.seconds }`,
                             distance: this.state.distance,
-                            averageSpeed: Math.round(((this.state.distance / 1000) / (this.state.speedTime * 3600)), 2)
+                            averageSpeed: Math.round(((this.state.distance / 1000) / (this.state.speedTime * 3600))),
+                            serializedTime: (this.state.speedTime - this.state.serializedTime)*60
                         }
                     ]
                 })

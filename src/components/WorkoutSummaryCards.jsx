@@ -6,7 +6,7 @@ class WorkoutSummaryCards extends Component {
     constructor(){
         super()
         this.state = {
-            cardsValue: ['dystans', 'czas', 'prędkość']
+            cardsValue: ['dystans', 'całkowity czas', 'prędkość', 'czas odcinkowy'],
         }
     }
 
@@ -14,32 +14,66 @@ class WorkoutSummaryCards extends Component {
         return(
             <Grid item xs={6} key={i}>
                 <Card>
-                    <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent: 'center'}}>
                         {
                             (()=>{
                                 if(props === 'dystans'){
                                     return(
-                                        <img style={{width: '50px'}} src="https://d30y9cdsu7xlg0.cloudfront.net/png/236772-200.png" alt='distance'/>
+                                        <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent: 'center'}}>
+                                            <img style={{width: '50px'}} src="https://d30y9cdsu7xlg0.cloudfront.net/png/236772-200.png" alt='distance'/>
+                                            <Typography>
+                                                {props}
+                                            </Typography>
+                                            <br/>
+                                            <Typography style={{fontSize: '1rem'}}>
+                                                <strong>{this.props.measurementPoint[0].distance}</strong> m
+                                            </Typography>
+                                        </CardContent>
+
                                     );
-                                }else if( props === 'czas'){
+                                }else if( props === 'całkowity czas'){
                                     return(
-                                        <img style={{width: '50px'}} src="https://www.freeiconspng.com/uploads/stopwatch-icon-20.png" alt='distance'/>
-                                    );
+                                        <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent: 'center'}}>
+
+                                            <img style={{width: '50px'}} src="https://www.freeiconspng.com/uploads/sports-stopwatch-icon-24.png" alt='distance'/>
+                                            <Typography>
+                                                {props}
+                                            </Typography>
+                                            <br/>
+                                            <Typography style={{fontSize: '1rem'}}>
+                                                <strong>{this.props.measurementPoint[0].time}</strong>
+                                            </Typography>
+                                        </CardContent>                                    );
                                 }else if( props === 'prędkość'){
                                     return(
-                                        <img style={{width: '50px'}} src="https://cdn3.iconfinder.com/data/icons/office-productivity-and-communication/400/Productivity-11-512.png" alt='distance'/>
+                                        <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent: 'center'}}>
+
+                                            <img style={{width: '50px'}} src="https://cdn3.iconfinder.com/data/icons/office-productivity-and-communication/400/Productivity-11-512.png" alt='distance'/>
+                                            <Typography>
+                                                {props}
+                                            </Typography>
+                                            <br/>
+                                            <Typography style={{fontSize: '1rem'}}>
+                                                <strong>{this.props.measurementPoint[0].averageSpeed}</strong>
+                                            </Typography>
+                                         </CardContent> 
                                     );
                                 }
+                                else if( props === 'czas odcinkowy'){
+                                    return(
+                                        <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent: 'center'}}>
+                                            <img style={{width: '50px'}} src="https://d30y9cdsu7xlg0.cloudfront.net/png/14262-200.png" alt='distance'/>
+                                            <Typography>
+                                                {props}
+                                            </Typography>
+                                            <br/>
+                                            <Typography style={{fontSize: '1rem'}}>
+                                                <strong>{this.props.measurementPoint[0].serializedTime}</strong>
+                                            </Typography>
+                                         </CardContent>    
+                                );
+                            }
                             })()
                         }
-                        <Typography>
-                            {props}
-                        </Typography>
-                        <br/>
-                        <Typography style={{fontSize: '1rem'}}>
-                            <strong></strong>
-                        </Typography>
-                    </CardContent>
                 </Card>
             </Grid>
         );
