@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Redirect} from 'react-router-dom'
 import {Grid, Card, CardContent, Typography} from '@material-ui/core'
 import {connect} from 'react-redux'
 
@@ -25,7 +26,7 @@ class WorkoutSummaryCards extends Component {
                                             </Typography>
                                             <br/>
                                             <Typography style={{fontSize: '1rem'}}>
-                                                <strong>{this.props.measurementPoint[0].distance}</strong> m
+                                                <strong>{this.props.measurementPoint[this.props.index].distance}</strong> m
                                             </Typography>
                                         </CardContent>
 
@@ -40,7 +41,7 @@ class WorkoutSummaryCards extends Component {
                                             </Typography>
                                             <br/>
                                             <Typography style={{fontSize: '1rem'}}>
-                                                <strong>{this.props.measurementPoint[0].time}</strong>
+                                                <strong>{this.props.measurementPoint[this.props.index].time}</strong>
                                             </Typography>
                                         </CardContent>                                    );
                                 }else if( props === 'prędkość'){
@@ -53,7 +54,7 @@ class WorkoutSummaryCards extends Component {
                                             </Typography>
                                             <br/>
                                             <Typography style={{fontSize: '1rem'}}>
-                                                <strong>{this.props.measurementPoint[0].averageSpeed}</strong>
+                                                <strong>{this.props.measurementPoint[this.props.index].averageSpeed}</strong>
                                             </Typography>
                                          </CardContent> 
                                     );
@@ -67,7 +68,7 @@ class WorkoutSummaryCards extends Component {
                                             </Typography>
                                             <br/>
                                             <Typography style={{fontSize: '1rem'}}>
-                                                <strong>{this.props.measurementPoint[0].serializedTime}</strong>
+                                                <strong>{Math.round(this.props.measurementPoint[this.props.index].serializedTime * 100) / 100} ''</strong>
                                             </Typography>
                                          </CardContent>    
                                 );
@@ -80,17 +81,25 @@ class WorkoutSummaryCards extends Component {
 
     }
    render(){
-    return (
-       <Grid container spacing={16} style={{marginTop: '5vh'}}>
-            {this.state.cardsValue.map(this.showCards)}
-       </Grid>
-    );
+       if(this.props.measurementPoint == false){
+           return(
+               <Redirect to='/rozpocznij-trening' />
+           );
+       }
+       else{
+        return (
+            <Grid container spacing={16} style={{marginTop: '5vh'}}>
+                 {this.state.cardsValue.map(this.showCards)}
+            </Grid>
+         );
+       }
   }
 }
 
 const mapStateToProps = state => {
-    return{
-        measurementPoint: state.summaryWorkout.measurementPoint
+    return {
+        measurementPoint: state.summaryWorkout.measurementPoint,
+        index: state.summaryWorkout.index
     }
 }
 

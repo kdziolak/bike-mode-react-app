@@ -22,7 +22,7 @@ class TripControlPanel extends Component {
                 minutes: 0,
                 hours: 0
             },
-            distancePassed: 20,
+            distancePassed: 500,
             measurementPoint: [],
             changeBtn: true,
             pauza: false,
@@ -69,18 +69,18 @@ class TripControlPanel extends Component {
                         );
             this.setState({
                 position: [pos.coords.latitude, pos.coords.longitude],
-                distance: (Math.round((this.state.distance+dist) * 100)/100) + 20
+                distance: (Math.round((this.state.distance+dist) * 100)/100)
             })
-            if(this.state.distance >= this.state.distancePassed){
+            if(this.state.distance >= this.state.distancePassed || this.state.distance <= 1){
                 this.setState({
-                    distancePassed: (this.state.distancePassed + 20),
+                    distancePassed: (this.state.distancePassed + 500),
                     measurementPoint: [
                         ...this.state.measurementPoint,
                         {
                             time: `${this.state.getTime.hours < 10 ? ('0' + this.state.getTime.hours) : this.state.getTime.hours }:${this.state.getTime.minutes < 10 ? ('0' + this.state.getTime.minutes) : this.state.getTime.minutes }:${this.state.getTime.seconds < 10 ? ('0' + this.state.getTime.seconds) : this.state.getTime.seconds }`,
                             distance: this.state.distance,
-                            averageSpeed: Math.round(((this.state.distance / 1000) / (this.state.speedTime * 3600))),
-                            serializedTime: (this.state.speedTime - this.state.serializedTime)*60
+                            averageSpeed: Math.round(((this.state.distance / 1000) / (this.state.speedTime / 3600))*100) / 100,
+                            serializedTime: (this.state.speedTime / 60000 - (this.state.serializedTime ? this.state.serializedTime : 0))
                         }
                     ]
                 })
@@ -185,12 +185,31 @@ class TripControlPanel extends Component {
             <Grid item xs={4} key={i}>
                 <Card style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <CardContent>
-                        <Typography align='center' variant='title'>
-                            {props}
-                        </Typography>
+                        {(() => {
+                                if(props === 'distance'){
+                                    return(
+                                        <Typography align='center' variant='headline'>
+                                            dystans
+                                        </Typography>
+                                    );
+                                }else if(props === 'time'){
+                                    return(
+                                        <Typography align='center' variant='headline'>
+                                            czas
+                                        </Typography>
+                                    );
+                                }
+                                else if(props === 'speed'){
+                                    return(
+                                        <Typography align='center' variant='headline'>
+                                            prędkość
+                                        </Typography>
+                                    );
+                                }
+                            })()}
                         <br/>
                         {(() => {
-                            let speed = ((this.state.distance / 1000) / (this.state.speedTime * 3600));
+                            let speed = ((this.state.distance / 1000) / (this.state.speedTime / 3600));
                                 if(props === 'distance'){
                                     return(
                                         <Typography align='center' variant='headline'>
@@ -207,7 +226,7 @@ class TripControlPanel extends Component {
                                 else if(props === 'speed'){
                                     return(
                                         <Typography align='center' variant='headline'>
-                                            { speed ? Math.round(speed, 2) : 0} <br/> km/h
+                                            { speed ? Math.round(speed * 100) / 100 : 0} <br/> km/h
                                         </Typography>
                                     );
                                 }

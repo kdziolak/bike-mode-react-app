@@ -4,3 +4,10 @@ export function sendMeasurement (measurement) {
         payload: measurement
     }
 }
+
+export function sendIndexToDisplayValues (index){
+    return {
+        type: 'SEND_INDEX',
+        payload: index
+    }
+}

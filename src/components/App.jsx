@@ -1,26 +1,34 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux'
 import {CssBaseline} from '@material-ui/core'
-import { Route } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom'
 import Header from './Header'
-import MainPage from './view/MainPage'
-import StartPracticePage from './view/StartPracticePage'
-import FinishWorkoutPage from './view/FinishWorkoutPage'
-import WorkoutSummaryPage from './view/WorkoutSummaryPage'
+import MainPage from './layout/MainPage'
+import StartPracticePage from './layout/StartPracticePage'
+import FinishWorkoutPage from './layout/FinishWorkoutPage'
+import WorkoutSummaryPage from './layout/WorkoutSummaryPage'
 
 
 class App extends Component {
   render() {
     return (
       <div>
-          <CssBaseline/>
-          <Header/>
-          <Route exact path='/' render={() => <MainPage/>}/>
-          <Route path='/rozpocznij-trening' render={() => <StartPracticePage/>}/>
-          <Route path='/koniec-treningu' render={() => <FinishWorkoutPage/>}/>
-          <Route path='/podsumowanie-treningu' render={() => <WorkoutSummaryPage/>}/>
+        <CssBaseline/>
+        <Header/>
+        <Route exact path='/' render={() => <MainPage/>}/>
+        <Route path='/rozpocznij-trening' render={() => <StartPracticePage/>}/>
+        <Route path='/koniec-treningu' render={() => <FinishWorkoutPage/>}/>
+        <Route path='/podsumowanie-treningu' render={() => <WorkoutSummaryPage/>}/>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return{
+      measurementPoint: state.summaryWorkout.measurementPoint
+  }
+}
+
+
+export default connect(mapStateToProps, null)(App);

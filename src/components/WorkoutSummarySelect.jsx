@@ -1,25 +1,56 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux'
+import { sendIndexToDisplayValues } from '../actions/workoutSummaryActions' 
 import {FormControl, Select, MenuItem, InputLabel} from '@material-ui/core'
 
 class WorkoutSummarySelect extends Component {
-   render(){
-    return (
-       <form>
-        <FormControl style={{width: '100%'}}>
-          <InputLabel>Kilometry</InputLabel>
-          <Select
-          >
-            <MenuItem value="">
-              <em>Cała trasa</em>
-            </MenuItem>
-            <MenuItem value={1}>1 km</MenuItem>
-            <MenuItem value={2}>2 km</MenuItem>
-            <MenuItem value={3}>3 km</MenuItem>
-          </Select>
-        </FormControl>
-        </form>
+  
+
+  handleChangeSelect = e =>{
+    this.props.measurementPoint.forEach((element, i) => {
+     if(element.distance === e.target.value){
+      this.props.sendIndexToDisplayValues(i) 
+     }
+    });
+    
+  }
+
+  showOptions = (props, i) => {
+    return(
+      <MenuItem key={i} value={props.distance}>
+        {props.distance} m
+      </MenuItem>
     );
+  }
+
+   render(){
+      return (
+        <form>
+         <FormControl style={{width: '100%'}}>
+           <InputLabel>Kilometry</InputLabel>
+           <Select 
+            value={`${this.props.measurementPoint[this.props.index]}`}
+            onChange={this.handleChangeSelect}
+           >
+             {this.props.measurementPoint.map(this.showOptions)}
+           </Select>
+         </FormControl>
+         </form>
+     );
+}
+}
+
+const mapStateToProps = state => {
+  return{
+      measurementPoint: state.summaryWorkout.measurementPoint,
+      index: state.summaryWorkout.index
+  }
+}
+const mapDispatchToProps = dispatch => {
+  return {
+    sendIndexToDisplayValues: index => dispatch(sendIndexToDisplayValues(index))
   }
 }
 
-export default WorkoutSummarySelect;
+
+export default connect(mapStateToProps, mapDispatchToProps)(WorkoutSummarySelect);
