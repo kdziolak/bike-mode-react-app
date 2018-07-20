@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid} from '@material-ui/core'
 import MapView from '../MapView'
-import TripControlPanel from '../TripControlPanel'
+import TripControlPanel from '../logic/TripControlPanel'
 
 const StartPracticePage = () => {
     return (

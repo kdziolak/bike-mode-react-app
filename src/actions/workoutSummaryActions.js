@@ -1,3 +1,5 @@
+import fire from '../firebase';
+
 export function sendMeasurement (measurement) {
     return {
         type: 'SEND_MEASUREMENT',
@@ -10,4 +12,8 @@ export function sendIndexToDisplayValues (index){
         type: 'SEND_INDEX',
         payload: index
     }
+}
+
+export function saveToDatabase (){
+    console.log(fire.database().ref())
 }

@@ -1,7 +1,8 @@
 import React from 'react';
 import {Grid, Typography} from '@material-ui/core'
-import WorkoutSummarySelect from '../WorkoutSummarySelect'
-import WorkoutSummaryCards from '../WorkoutSummaryCards'
+import WorkoutSummarySelect from '../logic/WorkoutSummarySelect'
+import WorkoutSummaryCards from '../logic/WorkoutSummaryCards'
+import WorkoutSummaryButtons from '../logic/WorkoutSummaryButtons'
 
 
 const WorkoutSummaryPage = () => {
@@ -23,6 +24,13 @@ const WorkoutSummaryPage = () => {
             </Grid>
             <Grid item xs={10}>
                 <WorkoutSummaryCards/>
+            </Grid> 
+            <Grid item xs={1}>
+            </Grid>
+            <Grid item xs={1}>
+            </Grid>
+            <Grid item xs={10}>
+                <WorkoutSummaryButtons/>
             </Grid> 
             <Grid item xs={1}>
             </Grid>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid} from '@material-ui/core'
 import GreetingsBlock from '../GreetingBlock'
-import StartPracticeCard from '../StartPracticeCard'
+import StartPracticeCard from '../logic/StartPracticeCard'
 import OptionCard from '../OptionCard';
 
 const MainPage = () => {
