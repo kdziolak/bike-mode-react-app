@@ -14,6 +14,15 @@ export function sendIndexToDisplayValues (index){
     }
 }
 
-export function saveToDatabase (){
-    console.log(fire.database().ref())
+export function saveToDatabase (trip){
+    return dispatch => {
+        let newTrip = fire.database().ref('/').push();
+        let id = newTrip.key;
+        newTrip.set({
+            trips:{
+                tripId: id,
+                tripPoints: trip
+            }
+        });
+    }
 }

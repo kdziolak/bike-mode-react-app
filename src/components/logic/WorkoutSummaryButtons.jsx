@@ -8,7 +8,7 @@ class WorkoutSummaryButtons extends Component {
 
   handleSave = () => {
     console.log(this.props.measurementPoint)
-    this.props.saveToDatabase();
+    this.props.saveToDatabase(this.props.measurementPoint);
   }
 
   render() {
