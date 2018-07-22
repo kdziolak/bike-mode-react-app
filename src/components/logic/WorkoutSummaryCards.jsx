@@ -54,7 +54,7 @@ class WorkoutSummaryCards extends Component {
                                             </Typography>
                                             <br/>
                                             <Typography style={{fontSize: '1rem'}}>
-                                                <strong>{this.props.measurementPoint[this.props.index].averageSpeed}</strong>
+                                                <strong>{this.props.measurementPoint[this.props.index].averageSpeed ? this.props.measurementPoint[this.props.index].averageSpeed : 0}</strong>
                                             </Typography>
                                          </CardContent> 
                                     );

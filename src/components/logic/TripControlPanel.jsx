@@ -72,6 +72,7 @@ class TripControlPanel extends Component {
                 distance: (Math.round((this.state.distance+dist) * 100)/100)
             })
             if(this.state.distance >= this.state.distancePassed || this.state.distance <= 1){
+                let averageSpeed = Math.round(((this.state.distance / 1000) / (this.state.speedTime / 3600))*100) / 100;
                 this.setState({
                     distancePassed: (this.state.distancePassed + 500),
                     measurementPoint: [
@@ -79,7 +80,7 @@ class TripControlPanel extends Component {
                         {
                             time: `${this.state.getTime.hours < 10 ? ('0' + this.state.getTime.hours) : this.state.getTime.hours }:${this.state.getTime.minutes < 10 ? ('0' + this.state.getTime.minutes) : this.state.getTime.minutes }:${this.state.getTime.seconds < 10 ? ('0' + this.state.getTime.seconds) : this.state.getTime.seconds }`,
                             distance: this.state.distance,
-                            averageSpeed: Math.round(((this.state.distance / 1000) / (this.state.speedTime / 3600))*100) / 100,
+                            averageSpeed: averageSpeed ? averageSpeed : 0,
                             serializedTime: (this.state.speedTime / 60000 - (this.state.serializedTime ? this.state.serializedTime : 0))
                         }
                     ]

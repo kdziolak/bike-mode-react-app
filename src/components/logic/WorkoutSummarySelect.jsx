@@ -10,10 +10,9 @@ class WorkoutSummarySelect extends Component {
   handleChangeSelect = e =>{
     this.props.measurementPoint.forEach((element, i) => {
      if(element.distance === e.target.value){
-      this.props.sendIndexToDisplayValues(i) 
+      this.props.sendIndexToDisplayValues(i)
      }
     });
-    
   }
 
   showOptions = (props, i) => {
