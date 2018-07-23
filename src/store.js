@@ -4,11 +4,14 @@ import logger from "redux-logger";
 
 import map from './reducers/mapReducer';
 import summaryWorkout from './reducers/workoutSummaryReducer'
+import resultsWorkout from './reducers/workoutsResultsReducer'
+
 
 export default createStore(
   combineReducers({
     map,
-    summaryWorkout
+    summaryWorkout,
+    resultsWorkout
   }),
   {},
   applyMiddleware(thunk, logger)
