@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import {FormGroup, FormControl,FormControlLabel, Radio, RadioGroup, InputLabel, Select} from '@material-ui/core';
+import {FormGroup, FormControl,FormControlLabel, Radio, RadioGroup, InputLabel, Select, MenuItem} from '@material-ui/core';
 import { getDataFromDatabase } from '../../actions/workoutsResultsActions'
 
 class WorkoutsResultsSettings extends Component {
@@ -8,7 +8,8 @@ class WorkoutsResultsSettings extends Component {
         super();
         this.state = {
             radioValue: 'speed',
-            lastData: ''
+            lastData: '',
+            dateValue: ''
         }
     }
 
@@ -21,21 +22,49 @@ class WorkoutsResultsSettings extends Component {
             radioValue: e.target.value
         })
     }
+
+    dateChange = e => {
+        this.setState({
+            dateValue: e.target.value
+        })
+    }
+
+    showDate = (props, i) =>{
+        return(
+            <MenuItem value={props.dateWorkout.date}>dzień: {props.dateWorkout.date}, godzina: {props.dateWorkout.time}</MenuItem>
+        );
+    }
     showOptions = (props, i) =>{
-        if(this.state.radioValue === 'speed') return(<option value={props.tripMeasurementPoints.averageSpeed}>{props.tripMeasurementPoints.averageSpeed}</option>)
-        else if(this.state.radioValue === 'time') return 'Czas'
-        else if(this.state.radioValue === 'distanc') return 'Dystans'
-        else if(this.state.radioValue === 'workoutDate'){
-            if(i >= 0){
-                console.log(props.dateWorkout.date !== this.props.workoutsData[--i].dateWorkout.date)
-            }
-            return(<option value={props.dateWorkout.date}>{props.dateWorkout.date}</option>)
-        } 
-        else if(this.state.radioValue === 'workoutTimeEnd') return 'Godzina treningu'
+        let x = props.tripMeasurementPoints;
+        if(Array.isArray(x)){
+            x.map(el => {
+                if(this.state.radioValue === 'speed'){
+                    if(props.dateWorkout.date === this.state.dateValue){
+                        console.log(el.averageSpeed)
+                        return(
+                            <MenuItem value={el.averageSpeed}>
+                                {el.averageSpeed}
+                            </MenuItem>
+                        );
+                    }
+                }
+            })
+        }
     }
   render() {
     return (
         <FormGroup >
+            <FormControl>
+                <InputLabel >
+                    Data treningu
+                </InputLabel>
+                <Select
+                    value={this.state.dateValue} 
+                    onChange={this.dateChange}>
+                    {this.props.workoutsData.map(this.showDate)}
+                </Select>
+            </FormControl>
+            <br/>
             <FormControl>
                 <RadioGroup style={{display: 'flex', flexDirection: 'row'}}
                     value={this.state.radioValue}
@@ -44,8 +73,6 @@ class WorkoutsResultsSettings extends Component {
                     <FormControlLabel value='speed' control={<Radio/>} label="Prędkość"/>
                     <FormControlLabel value='time' control={<Radio/>} label="Czas"/>
                     <FormControlLabel value='distanc' control={<Radio/>} label="Dystans"/>
-                    <FormControlLabel value='workoutDate' control={<Radio/>} label="Data treningu"/>
-                    <FormControlLabel value='workoutTimeEnd' control={<Radio/>} label="Godzina treningu"/>
                 </RadioGroup>
             </FormControl>
             <FormControl>
@@ -53,9 +80,7 @@ class WorkoutsResultsSettings extends Component {
                     {(()=>{
                         if(this.state.radioValue === 'speed') return 'Prędkość'
                         else if(this.state.radioValue === 'time') return 'Czas'
-                        else if(this.state.radioValue === 'distanc') return 'Dystans'
-                        else if(this.state.radioValue === 'workoutDate') return 'Data treningu'
-                        else if(this.state.radioValue === 'workoutTimeEnd') return 'Godzina treningu'                    
+                        else if(this.state.radioValue === 'distanc') return 'Dystans'                  
                     })()}
                 </InputLabel>
                 <Select>
