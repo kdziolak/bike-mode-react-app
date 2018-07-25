@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid, Typography} from '@material-ui/core';
 import WorkoutsResultsSettings from '../logic/WorkoutsResultsSettings'
-// import {WorkoutResultsTabel} from '../logic/WorkoutResultsTabel'
+ import WorkoutsResultsTable from '../logic/WorkoutsResultsTable'
 
 const WorkoutsResultsPage = () => {
     return (
@@ -12,6 +12,11 @@ const WorkoutsResultsPage = () => {
            <Grid item xs={1} />
            <Grid item xs={10}>
                 <WorkoutsResultsSettings />
+           </Grid>
+           <Grid item xs={1} />
+           <Grid item xs={1} />
+           <Grid item xs={10}>
+                <WorkoutsResultsTable />
            </Grid>
            <Grid item xs={1} />
         </Grid> 

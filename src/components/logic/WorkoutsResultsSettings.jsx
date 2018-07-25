@@ -9,8 +9,12 @@ class WorkoutsResultsSettings extends Component {
         this.state = {
             radioValue: 'speed',
             lastData: '',
-            dateValue: ''
+            dateValue: '',
+            value: null
         }
+    }
+
+    componentDidUpdate(){
     }
 
     componentDidMount(){
@@ -29,28 +33,61 @@ class WorkoutsResultsSettings extends Component {
         })
     }
 
+    changeWorkoutData = () => {
+        this.setState({
+            updateView: true
+        })
+    }
+
     showDate = (props, i) =>{
         return(
             <MenuItem value={props.dateWorkout.date}>dzień: {props.dateWorkout.date}, godzina: {props.dateWorkout.time}</MenuItem>
         );
     }
     showOptions = (props, i) =>{
+        let bool = false
+        let elem = [];
         let x = props.tripMeasurementPoints;
         if(Array.isArray(x)){
             x.map(el => {
-                if(this.state.radioValue === 'speed'){
+                if(this.state.radioValue === 'time'){
                     if(props.dateWorkout.date === this.state.dateValue){
-                        console.log(el.averageSpeed)
-                        return(
-                            <MenuItem value={el.averageSpeed}>
-                                {el.averageSpeed}
-                            </MenuItem>
-                        );
+                        bool = true;
+                       elem = [...elem, el.time]
+                    }
+                } else if(this.state.radioValue === 'speed') {
+                    if(props.dateWorkout.date === this.state.dateValue){
+                        bool = true;
+                       elem = [...elem, el.averageSpeed]
+                    }
+                }   else if(this.state.radioValue === 'distance') {
+                    if(props.dateWorkout.date === this.state.dateValue){
+                        bool = true;
+                       elem = [...elem, el.averageSpeed]
                     }
                 }
             })
         }
+        if(bool){
+            return(
+                <FormControl>
+                    <InputLabel >
+                        {(()=>{
+                            if(this.state.radioValue === 'speed') return 'Prędkość'
+                            else if(this.state.radioValue === 'time') return 'Czas'
+                            else if(this.state.radioValue === 'distance') return 'Dystans'                  
+                        })()}
+                    </InputLabel>
+                    <Select>
+                        {
+                            elem.map(el => <MenuItem>{el}</MenuItem>)
+                        }
+                    </Select>
+                </FormControl>
+            )
+        }
     }
+
   render() {
     return (
         <FormGroup >
@@ -72,21 +109,13 @@ class WorkoutsResultsSettings extends Component {
                 >
                     <FormControlLabel value='speed' control={<Radio/>} label="Prędkość"/>
                     <FormControlLabel value='time' control={<Radio/>} label="Czas"/>
-                    <FormControlLabel value='distanc' control={<Radio/>} label="Dystans"/>
+                    <FormControlLabel value='distance' control={<Radio/>} label="Dystans"/>
                 </RadioGroup>
             </FormControl>
-            <FormControl>
-                <InputLabel >
-                    {(()=>{
-                        if(this.state.radioValue === 'speed') return 'Prędkość'
-                        else if(this.state.radioValue === 'time') return 'Czas'
-                        else if(this.state.radioValue === 'distanc') return 'Dystans'                  
-                    })()}
-                </InputLabel>
-                <Select>
-                    {this.props.workoutsData.map(this.showOptions)}
-                </Select>
-            </FormControl>
+
+            {/* show select options */}
+            {this.props.workoutsData.map(this.showOptions)}
+
         </FormGroup>
     );
   }
