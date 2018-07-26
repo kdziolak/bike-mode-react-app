@@ -21,7 +21,8 @@ class App extends Component {
         <Route path='/rozpocznij-trening' render={() => <StartPracticePage/>}/>
         <Route path='/koniec-treningu' render={() => <FinishWorkoutPage/>}/>
         <Route path='/podsumowanie-treningu' render={() => <WorkoutSummaryPage/>}/>
-        <Route path='/wyniki-treningow' render={() => <WorkoutsResultsPage/>}/>
+        <Route path='/wyniki-treningow' render={() => <WorkoutsResultsPage/>} />
+        <Route path='/wyniki-treningow/trening/:id' render={({match}) => console.log(match.path)}/>
       </div>
     );
   }

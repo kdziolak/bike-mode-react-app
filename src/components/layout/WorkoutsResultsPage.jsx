@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid, Typography} from '@material-ui/core';
 import WorkoutsResultsSettings from '../logic/WorkoutsResultsSettings'
- import WorkoutsResultsTable from '../logic/WorkoutsResultsTable'
+import WorkoutsResultsTable from '../logic/WorkoutsResultsTable'
 
 const WorkoutsResultsPage = () => {
     return (
