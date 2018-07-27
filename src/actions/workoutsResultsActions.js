@@ -15,3 +15,21 @@ export function getDataFromDatabase (){
         })
     }
 }
+
+export function clearDataAfterUnmount (){
+    return dispatch => {
+        dispatch({
+            type: 'CLEAR_DATA_AFTER_UNMOUNT',
+            payloads: null
+        })
+    }
+}
+
+export function postDateValue (date){
+    return dispatch => {
+        dispatch({
+            type: 'POST_DATE_VALUE',
+            payload: date
+        })
+    }
+}

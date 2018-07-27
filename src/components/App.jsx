@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux'
 import {CssBaseline} from '@material-ui/core'
-import { Route, Redirect } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import Header from './Header'
 import MainPage from './layout/MainPage'
 import StartPracticePage from './layout/StartPracticePage'
@@ -21,18 +20,14 @@ class App extends Component {
         <Route path='/rozpocznij-trening' render={() => <StartPracticePage/>}/>
         <Route path='/koniec-treningu' render={() => <FinishWorkoutPage/>}/>
         <Route path='/podsumowanie-treningu' render={() => <WorkoutSummaryPage/>}/>
-        <Route path='/wyniki-treningow' render={() => <WorkoutsResultsPage/>} />
-        <Route path='/wyniki-treningow/trening/:id' render={({match}) => console.log(match.path)}/>
+        <Switch>
+          <Route exact path='/wyniki-treningow' render={() => <WorkoutsResultsPage/>} />
+          <Route path='/wyniki-treningow/trening/:id' render={() => <MainPage/>}/>
+        </Switch>
+        
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return{
-      measurementPoint: state.summaryWorkout.measurementPoint
-  }
-}
-
-
-export default connect(mapStateToProps, null)(App);
+export default App;

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
-import {Table, TableBody, TableCell, TableRow, TableHead, Paper} from '@material-ui/core';
-import {getDataFromDatabase} from '../../actions/workoutsResultsActions'
+import {Table, TableBody, TableCell, TableRow, TableHead, Paper, CircularProgress} from '@material-ui/core';
 import {Redirect} from 'react-router-dom';
-import { timingSafeEqual } from 'crypto';
+
+
 class WorkoutsResultsTable extends Component {
     constructor(){
         super();
@@ -12,6 +12,7 @@ class WorkoutsResultsTable extends Component {
         }
         
     }
+
 
     handleClick = () => {
         this.setState({
@@ -25,10 +26,10 @@ class WorkoutsResultsTable extends Component {
                 // console.log(el)
             })
         }
-        if(!props.dateWorkout.date) return;
+        if(!props.dateWorkout.date || props.dateWorkout.postDateValue === props.dateWorkout.date) return;
         return (
             
-                <TableRow onClick={this.handleClick}>
+                <TableRow key={i} onClick={this.handleClick}>
                     <TableCell>
                         {props.dateWorkout.date}
                     </TableCell>
@@ -59,20 +60,15 @@ class WorkoutsResultsTable extends Component {
                 </TableBody>
             </Table>
         </Paper>
-    );
+    ); 
   }
 }
 
 const mapStateToProps = state => {
+    console.log(state.resultsWorkout)
     return{
         workoutsData: state.resultsWorkout
     }
   }
-  const mapDispatchToProps = dispatch => {
-    return {
-        getDataFromDatabase: () => dispatch(getDataFromDatabase())
-    }
-  }
   
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(WorkoutsResultsTable);
+  export default connect(mapStateToProps, null)(WorkoutsResultsTable);

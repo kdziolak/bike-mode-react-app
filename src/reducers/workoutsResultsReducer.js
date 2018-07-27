@@ -1,3 +1,5 @@
+import { postDateValue } from "../actions/workoutsResultsActions";
+
 const resultsWorkout = (
     state = [
         {
@@ -18,8 +20,20 @@ const resultsWorkout = (
                 dateWorkout: action.payloads.dateWorkout
             }
         ]
+        
         break;
       }
+      case "CLEAR_DATA_AFTER_UNMOUNT": {
+        state = []
+        break;
+      }
+      case "POST_DATE_VALUE": {
+        state = state.map(el => {
+            el.dateWorkout.postDateValue = action.payload;
+        })
+        break;
+      }
+      
     }
     return state;
   };

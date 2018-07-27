@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import {FormGroup, FormControl,FormControlLabel, Radio, RadioGroup, InputLabel, Select, MenuItem} from '@material-ui/core';
-import { getDataFromDatabase } from '../../actions/workoutsResultsActions'
+import { getDataFromDatabase, clearDataAfterUnmount, postDateValue } from '../../actions/workoutsResultsActions'
 
 class WorkoutsResultsSettings extends Component {
     constructor(){
@@ -13,12 +13,11 @@ class WorkoutsResultsSettings extends Component {
             value: null
         }
     }
-
-    componentDidUpdate(){
-    }
-
     componentDidMount(){
         this.props.getDataFromDatabase()
+    }
+    componentWillUnmount() {
+        this.props.clearDataAfterUnmount()
     }
 
     handleChange = e => {
@@ -31,6 +30,7 @@ class WorkoutsResultsSettings extends Component {
         this.setState({
             dateValue: e.target.value
         })
+        this.props.postDateValue(e.target.value)
     }
 
     changeWorkoutData = () => {
@@ -41,7 +41,7 @@ class WorkoutsResultsSettings extends Component {
 
     showDate = (props, i) =>{
         return(
-            <MenuItem value={props.dateWorkout.date}>dzień: {props.dateWorkout.date}, godzina: {props.dateWorkout.time}</MenuItem>
+            <MenuItem key={i} value={props.dateWorkout.date}>dzień: {props.dateWorkout.date}, godzina: {props.dateWorkout.time}</MenuItem>
         );
     }
     showOptions = (props, i) =>{
@@ -70,7 +70,7 @@ class WorkoutsResultsSettings extends Component {
         }
         if(bool){
             return(
-                <FormControl>
+                <FormControl key={i}>
                     <InputLabel >
                         {(()=>{
                             if(this.state.radioValue === 'speed') return 'Prędkość'
@@ -128,7 +128,9 @@ const mapStateToProps = state => {
   }
   const mapDispatchToProps = dispatch => {
     return {
-        getDataFromDatabase: () => dispatch(getDataFromDatabase())
+        getDataFromDatabase: () => dispatch(getDataFromDatabase()),
+        clearDataAfterUnmount: () => dispatch(clearDataAfterUnmount()),
+        postDateValue: date => dispatch(postDateValue(date))
     }
   }
   
