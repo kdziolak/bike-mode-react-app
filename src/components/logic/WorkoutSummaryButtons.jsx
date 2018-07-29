@@ -4,6 +4,7 @@ import { Link, Redirect } from 'react-router-dom'
 import { Button } from '@material-ui/core';
 import { saveToDatabase } from '../../actions/workoutSummaryActions'
 
+
 class WorkoutSummaryButtons extends Component {
   constructor(){
     super();

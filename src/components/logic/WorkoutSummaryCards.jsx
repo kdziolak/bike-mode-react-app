@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom'
 import {Grid, Card, CardContent, Typography} from '@material-ui/core'
 import {connect} from 'react-redux'
+import { runInThisContext } from 'vm';
 
 class WorkoutSummaryCards extends Component {
     constructor(){
@@ -56,7 +57,7 @@ class WorkoutSummaryCards extends Component {
                                             <Typography style={{fontSize: '1rem'}}>
                                                 <strong>{this.props.measurementPoint[this.props.index].averageSpeed ? this.props.measurementPoint[this.props.index].averageSpeed : 0}</strong>
                                             </Typography>
-                                         </CardContent> 
+                                         </CardContent>
                                     );
                                 }
                                 else if( props === 'czas odcinkowy'){
@@ -70,7 +71,7 @@ class WorkoutSummaryCards extends Component {
                                             <Typography style={{fontSize: '1rem'}}>
                                                 <strong>{Math.round(this.props.measurementPoint[this.props.index].serializedTime * 100) / 100} ''</strong>
                                             </Typography>
-                                         </CardContent>    
+                                         </CardContent>
                                 );
                             }
                             })()

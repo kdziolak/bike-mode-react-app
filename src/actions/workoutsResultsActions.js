@@ -24,12 +24,3 @@ export function clearDataAfterUnmount (){
         })
     }
 }
-
-export function postDateValue (date){
-    return dispatch => {
-        dispatch({
-            type: 'POST_DATE_VALUE',
-            payload: date
-        })
-    }
-}

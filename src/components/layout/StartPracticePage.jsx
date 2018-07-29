@@ -12,7 +12,7 @@ const StartPracticePage = () => {
             <Grid item xs={12}>
                 <TripControlPanel />
             </Grid>
-        </Grid> 
+        </Grid>
     );
 }
 

@@ -27,13 +27,6 @@ const resultsWorkout = (
         state = []
         break;
       }
-      case "POST_DATE_VALUE": {
-        state = state.map(el => {
-            el.dateWorkout.postDateValue = action.payload;
-        })
-        break;
-      }
-      
     }
     return state;
   };
