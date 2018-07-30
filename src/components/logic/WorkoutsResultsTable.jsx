@@ -21,11 +21,19 @@ class WorkoutsResultsTable extends Component {
 
 
     showTableRows = (props, i) => {
+
+        let time;
+
         if(Array.isArray(props.tripMeasurementPoints)){
             props.tripMeasurementPoints.map(el => {
-                // console.log(el.time);
+                if(this.props.tripData === 'time'){
+                    time =  props.tripMeasurementPoints[props.tripMeasurementPoints.length-1].time;
+                    return;
+                }
             })
         }
+        
+
         if(this.props.dateValue === 'allDates' && props.dateWorkout.date !== undefined){
             return (
                 <TableRow key={i} onClick={this.handleClick}>
@@ -33,6 +41,9 @@ class WorkoutsResultsTable extends Component {
                         {props.dateWorkout.date}
                     </TableCell>
                     <TableCell>
+                        {
+                            time
+                        }
                     </TableCell>
                     {this.state.redirect ? <Redirect to={`/wyniki-treningow/trening/${props.tripId}`} /> : null}
                 </TableRow>
@@ -40,7 +51,7 @@ class WorkoutsResultsTable extends Component {
             );
         }
 
-        if(!props.dateWorkout.date || props.dateWorkout.date !== undefined || (this.props.dateValue !== '' && this.props.dateValue !== props.dateWorkout.date) ) return;
+        if(!props.dateWorkout.date || (this.props.dateValue !== '' && this.props.dateValue !== props.dateWorkout.date) ) return;
         
         return (
             <TableRow key={i} onClick={this.handleClick}>
@@ -67,7 +78,14 @@ class WorkoutsResultsTable extends Component {
                             <strong>Dzień treningu</strong>
                         </TableCell>
                         <TableCell>
-                            <strong>Dystans</strong>
+                            <strong>
+                            {
+                                (()=>{
+                                    if(this.props.tripData === 'speed') return 'Prędkość'
+                                    else if(this.props.tripData === 'time') return 'Czas'
+                                    else if(this.props.tripData === 'distance') return 'Dystans'                  
+                                })()
+                            }</strong>
                         </TableCell>
                     </TableRow>
                 </TableHead>
@@ -85,7 +103,9 @@ class WorkoutsResultsTable extends Component {
 const mapStateToProps = state => {
     return{
         workoutsData: state.resultsWorkout,
-        dateValue: state.filterData.dateValue
+        dateValue: state.filterData.dateValue,
+        tripData: state.filterData.tripData
+
     }
   }
 

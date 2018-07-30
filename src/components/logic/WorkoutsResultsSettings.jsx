@@ -136,6 +136,7 @@ class WorkoutsResultsSettings extends Component {
 }
 
 const mapStateToProps = state => {
+    console.log(state.filterData.date)
     return{
         workoutsData: state.resultsWorkout,
         date: state.filterData.dateValue,

@@ -1,7 +1,7 @@
 const filterData = (
     state = 
         {
-            dateValue: 'allDatas',
+            dateValue: 'allDates',
             tripData: ''
         },
     action = {}
