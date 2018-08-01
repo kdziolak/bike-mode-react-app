@@ -7,6 +7,7 @@ import StartPracticePage from './layout/StartPracticePage'
 import FinishWorkoutPage from './layout/FinishWorkoutPage'
 import WorkoutSummaryPage from './layout/WorkoutSummaryPage'
 import WorkoutsResultsPage from './layout/WorkoutsResultsPage'
+import DetailedWorkoutDataPage from './layout/DetailedWorkoutDataPage'
 
 
 
@@ -22,7 +23,7 @@ class App extends Component {
         <Route path='/podsumowanie-treningu' render={() => <WorkoutSummaryPage/>}/>
         <Switch>
           <Route exact path='/wyniki-treningow' render={() => <WorkoutsResultsPage/>} />
-          <Route path='/wyniki-treningow/trening/:id' render={() => <MainPage/>}/>
+          <Route path='/wyniki-treningow/trening/:id' render={({match}) =>  <DetailedWorkoutDataPage match={match}/>}/>
         </Switch>
         
       </div>

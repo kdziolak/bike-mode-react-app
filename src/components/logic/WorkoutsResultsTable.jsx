@@ -24,8 +24,6 @@ class WorkoutsResultsTable extends Component {
 
         let time, speed, distance;
 
-        console.log(props.tripMeasurementPoints[props.tripMeasurementPoints.length-1])
-
         if(Array.isArray(props.tripMeasurementPoints)){
             props.tripMeasurementPoints.map(el => {
                 if(this.props.tripData === 'time'){
@@ -73,6 +71,13 @@ class WorkoutsResultsTable extends Component {
                     {props.dateWorkout.date}
                 </TableCell>
                 <TableCell>
+                {
+                    (()=>{
+                        if(this.props.tripData === 'speed') return speed;
+                        else if(this.props.tripData === 'time') return time;
+                        else if(this.props.tripData === 'distance') return distance;                  
+                    })()
+                }
                 </TableCell>
                 {this.state.redirect ? <Redirect to={`/wyniki-treningow/trening/${props.tripId}`} /> : null}
             </TableRow>

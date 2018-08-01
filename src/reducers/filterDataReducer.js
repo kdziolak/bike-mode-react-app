@@ -2,7 +2,7 @@ const filterData = (
     state = 
         {
             dateValue: 'allDates',
-            tripData: ''
+            tripData: 'speed'
         },
     action = {}
   ) => {
