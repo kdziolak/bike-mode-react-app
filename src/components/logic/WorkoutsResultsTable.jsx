@@ -22,12 +22,22 @@ class WorkoutsResultsTable extends Component {
 
     showTableRows = (props, i) => {
 
-        let time;
+        let time, speed, distance;
+
+        console.log(props.tripMeasurementPoints[props.tripMeasurementPoints.length-1])
 
         if(Array.isArray(props.tripMeasurementPoints)){
             props.tripMeasurementPoints.map(el => {
                 if(this.props.tripData === 'time'){
                     time =  props.tripMeasurementPoints[props.tripMeasurementPoints.length-1].time;
+                    return;
+                }
+                else if(this.props.tripData === 'speed'){
+                    speed =  props.tripMeasurementPoints[props.tripMeasurementPoints.length-1].averageSpeed;
+                    return;
+                }
+                else if(this.props.tripData === 'distance'){
+                    distance =  props.tripMeasurementPoints[props.tripMeasurementPoints.length-1].distance;
                     return;
                 }
             })
@@ -42,7 +52,11 @@ class WorkoutsResultsTable extends Component {
                     </TableCell>
                     <TableCell>
                         {
-                            time
+                            (()=>{
+                                if(this.props.tripData === 'speed') return speed;
+                                else if(this.props.tripData === 'time') return time;
+                                else if(this.props.tripData === 'distance') return distance;                  
+                            })()
                         }
                     </TableCell>
                     {this.state.redirect ? <Redirect to={`/wyniki-treningow/trening/${props.tripId}`} /> : null}
