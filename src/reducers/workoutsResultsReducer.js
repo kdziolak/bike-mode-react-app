@@ -5,7 +5,8 @@ const resultsWorkout = (
         {
             tripId: '',
             tripMeasurementPoints: {},
-            dateWorkout: {}
+            dateWorkout: {},
+            mapPosition: [0, 0]
         }
     ],
     action = {}
@@ -17,7 +18,8 @@ const resultsWorkout = (
             {
                 tripId: action.payloads.tripId,
                 tripMeasurementPoints: action.payloads.tripMeasurementPoint,
-                dateWorkout: action.payloads.dateWorkout
+                dateWorkout: action.payloads.dateWorkout,
+                mapPosition: action.payloads.mapPosition
             }
         ]
         

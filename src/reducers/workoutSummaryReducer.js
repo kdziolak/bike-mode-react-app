@@ -2,6 +2,7 @@ const summaryWorkout = (
     state = 
         {
             measurementPoint: [],
+            mapPosition: [],
             index: 0
         },
     action = {}
@@ -10,7 +11,8 @@ const summaryWorkout = (
       case "SEND_MEASUREMENT": {
         state = {
             ...state,
-            measurementPoint: action.payload
+            measurementPoint: action.payload.measurementPoint,
+            mapPosition: action.payload.mapPosition
           }
         break;
       }

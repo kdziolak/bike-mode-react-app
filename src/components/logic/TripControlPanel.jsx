@@ -22,11 +22,12 @@ class TripControlPanel extends Component {
                 minutes: 0,
                 hours: 0
             },
-            distancePassed: 500,
+            distancePassed: 20,
             measurementPoint: [],
             changeBtn: true,
             pauza: false,
-            finishWorkoutBool: false
+            finishWorkoutBool: false,
+            mapPointsPosition: []
         }
     }
     
@@ -37,14 +38,15 @@ class TripControlPanel extends Component {
                     }))
         })
         .then(() => {
-            this.props.sendMeasurement(this.state.measurementPoint)
+            console.log(this.state.mapPointsPosition)
+            this.props.sendMeasurement(this.state.measurementPoint, this.state.mapPointsPosition)
         })
         .then(() => {
             this.setState({
                 finishWorkoutBool: true
             })
         })
-        
+
     }
 
     pauzaBtnClick = () => {
@@ -69,12 +71,12 @@ class TripControlPanel extends Component {
                         );
             this.setState({
                 position: [pos.coords.latitude, pos.coords.longitude],
-                distance: (Math.round((this.state.distance+dist) * 100)/100)
+                distance: (Math.round((this.state.distance+dist) * 100)/100) + 10
             })
             if(this.state.distance >= this.state.distancePassed || this.state.distance <= 1){
                 let averageSpeed = Math.round(((this.state.distance / 1000) / (this.state.speedTime / 3600))*100) / 100;
                 this.setState({
-                    distancePassed: (this.state.distancePassed + 500),
+                    distancePassed: (this.state.distancePassed + 10),
                     measurementPoint: [
                         ...this.state.measurementPoint,
                         {
@@ -83,7 +85,8 @@ class TripControlPanel extends Component {
                             averageSpeed: averageSpeed ? averageSpeed : 0,
                             serializedTime: (this.state.speedTime / 60000 - (this.state.serializedTime ? this.state.serializedTime : 0))
                         }
-                    ]
+                    ],
+                    mapPointsPosition: [...this.state.mapPointsPosition, this.state.position]
                 })
                 this.props.sendMarkersToMap(this.state.distance, this.state.position)
             }
@@ -306,7 +309,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         sendMarkersToMap: (distance, position) => dispatch(sendMarkersToMap(distance, position)),
-        sendMeasurement: (measurement) => dispatch(sendMeasurement(measurement))
+        sendMeasurement: (measurement, position) => dispatch(sendMeasurement(measurement, position))
     }
 }
 
