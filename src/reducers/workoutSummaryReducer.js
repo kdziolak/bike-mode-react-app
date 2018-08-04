@@ -11,8 +11,8 @@ const summaryWorkout = (
       case "SEND_MEASUREMENT": {
         state = {
             ...state,
-            measurementPoint: action.payload.measurementPoint,
-            mapPosition: action.payload.mapPosition
+            measurementPoint: action.payloads.measurement,
+            mapPositions: action.payloads.mapPositions
           }
         break;
       }

@@ -14,7 +14,7 @@ class WorkoutSummaryButtons extends Component {
   }
 
   handleSave = () => {
-    this.props.saveToDatabase(this.props.measurementPoint, this.props.mapPosition);
+    this.props.saveToDatabase(this.props.measurementPoint, this.props.mapPositions);
     this.setState({redirect: true})
   }
 
@@ -35,14 +35,14 @@ class WorkoutSummaryButtons extends Component {
 const mapStateToProps = state => {
   return {
       measurementPoint: state.summaryWorkout.measurementPoint,
-      mapPosition: state.summaryWorkout.mapPosition,
+      mapPositions: state.summaryWorkout.mapPositions,
       index: state.summaryWorkout.index
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return{
-    saveToDatabase: data => dispatch(saveToDatabase(data))
+    saveToDatabase: (mesurement, positions) => dispatch(saveToDatabase(mesurement, positions))
   }
 }
 

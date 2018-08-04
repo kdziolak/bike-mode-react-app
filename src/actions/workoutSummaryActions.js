@@ -4,7 +4,7 @@ export function sendMeasurement (measurement, mapPositions) {
     return dispatch => {
         dispatch({
             type: 'SEND_MEASUREMENT',
-            payload: {
+            payloads: {
                 measurement,
                 mapPositions
             }
@@ -20,7 +20,6 @@ export function sendIndexToDisplayValues (index){
 }
 
 export function saveToDatabase (tripData, mapPositions){
-    console.log(mapPositions)
     let date = new Date();
     let month = date.getMonth();
     let day = date.getDate();
@@ -74,16 +73,15 @@ export function saveToDatabase (tripData, mapPositions){
         }
         
     }
-    // ! need to uncomment this code
-    // let newTrip = fire.database().ref('/trips').push();
-    // let id = newTrip.key;
-    // newTrip.set({
-    //     tripId: id,
-    //     tripMeasurementPoint: tripData,
-    //     dateWorkout: {
-    //         date: `${day} ${month} ${year}`,
-    //         time: `${hours}:${minutes}`
-    //     },
-    //     mapPositions
-    // })
+    let newTrip = fire.database().ref('/trips').push();
+    let id = newTrip.key;
+    newTrip.set({
+        tripId: id,
+        tripMeasurementPoint: tripData,
+        dateWorkout: {
+            date: `${day} ${month} ${year}`,
+            time: `${hours}:${minutes}`
+        },
+        mapPositions
+    })
 }

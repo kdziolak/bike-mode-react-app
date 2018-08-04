@@ -38,7 +38,6 @@ class TripControlPanel extends Component {
                     }))
         })
         .then(() => {
-            console.log(this.state.mapPointsPosition)
             this.props.sendMeasurement(this.state.measurementPoint, this.state.mapPointsPosition)
         })
         .then(() => {
