@@ -5,7 +5,7 @@ import WorkoutsResultsTable from '../logic/WorkoutsResultsTable'
 
 const WorkoutsResultsPage = () => {
     return (
-        <Grid container spacing={16} style={{marginTop: '12vh'}}>
+        <Grid container spacing={16} style={{marginTop: '5vh'}}>
            <Grid item xs={12}>
             <Typography variant='display1' style={{textAlign: 'center'}}>Wyniki</Typography>
            </Grid>

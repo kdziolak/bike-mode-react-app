@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import {Grid, Card, CardContent, Typography, CardActions, Button} from '@material-ui/core';
+import {Link} from 'react-router-dom'
 import './css/OptionCard.css'
 
 class OptionCard extends Component {
     constructor(){
         super();
         this.state={
-            options: ['trasy', 'ostatnie aktywnosci'],
+            options: ['trasy', 'wyniki treningow'],
             icons: ['fa-road','fas fa-chart-line']
         }
     }
@@ -21,9 +22,11 @@ class OptionCard extends Component {
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <Button variant='contained' color='primary'>
-                            {props}
-                        </Button>
+                        <Link to='/wyniki-treningow'>
+                            <Button variant='contained' color='primary'>
+                                {props}
+                            </Button>
+                        </Link>
                     </CardActions>
                 </Card>
             </Grid>

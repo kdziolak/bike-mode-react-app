@@ -17,33 +17,24 @@ class DetailedWorkoutDataMap extends Component {
         this.props.getDataFromDatabase();
     }
 
-    showPopup = (el,i) => {
-        return(
-            <Popup key={i}>
-                Pokonano {el.distance} kilometrów.
-            </Popup>
-        )
-    }
 
-    showMarkers = (el, i) => {
-        console.log(el)
+    showMarkers = (elem,i, el) => {
         return (
-            <Marker key={i} position={el}>
-                {/* <Popup>{value.tripMeasurementPoints[i].distance}</Popup> */}
+            <Marker key={i} position={elem}>
+                <Popup>Pokonano {el.tripMeasurementPoints[i].distance} kilometrów.</Popup>
             </Marker>
         )
     }
 
     showMap = (el,i) => {
         if(this.state.paramsID === el.tripId){
-            console.log(el.tripMeasurementPoints)
             return(
                 <Map key={i} style={{height: '40vh', width: '103vw'}} center={el.mapPositions[el.mapPositions.length-1]} zoom={15}>
                     <TileLayer
                         attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
-                    {el.mapPositions.map(this.showMarkers)}
+                    {el.mapPositions.map((elem, i) => this.showMarkers(elem, i, el))}
                 </Map>  
             )
         }
@@ -52,7 +43,7 @@ class DetailedWorkoutDataMap extends Component {
 
   render() {
     return (
-        <div style={{marginTop: '9vh'}}>
+        <div>
             {this.props.resultsWorkout.map(this.showMap)}
         </div> 
     );

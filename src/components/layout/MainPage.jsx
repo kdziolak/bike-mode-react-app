@@ -6,17 +6,20 @@ import OptionCard from '../OptionCard';
 
 const MainPage = () => {
     return (
-        <Grid container spacing={16} style={{marginTop: '18vh'}}>
+        <Grid container spacing={16} style={{marginTop: '5vh'}}>
             <Grid item xs={12}>
                 <GreetingsBlock/>
             </Grid>
-            <Grid item xs={1}></Grid>
-            <Grid item xs={10} style={{marginTop: '5vh'}}>
+            <Grid item xs={1} sm={3}></Grid>
+            <Grid item xs={10} sm={6} style={{marginTop: '5vh'}}>
                 <StartPracticeCard/>
             </Grid>
-            <Grid item xs={12} style={{marginTop: '5vh'}}>
+            <Grid item sm={3}></Grid>
+            <Grid item sm={2}></Grid>
+            <Grid item xs={12} sm={8} style={{marginTop: '5vh'}}>
                 <OptionCard/>
             </Grid>
+            <Grid item sm={2}></Grid>
         </Grid> 
     );
 }

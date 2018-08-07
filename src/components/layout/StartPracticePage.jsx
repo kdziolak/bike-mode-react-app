@@ -5,7 +5,7 @@ import TripControlPanel from '../logic/TripControlPanel'
 
 const StartPracticePage = () => {
     return (
-        <Grid container spacing={16} style={{marginTop: '45px'}}>
+        <Grid container spacing={16}>
             <Grid item xs={12}>
                 <MapView/>
             </Grid>

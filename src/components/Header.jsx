@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {AppBar, Toolbar, Typography,IconButton, Drawer} from '@material-ui/core';
 import {Menu} from '@material-ui/icons'
+import {Link} from 'react-router-dom'
 
 class Header extends Component {
     constructor(){
@@ -22,13 +23,15 @@ class Header extends Component {
     }
   render() {
     return (
-    <div>
-        <AppBar>
+    <div  style={{display: 'block', marhinTop: '10px', width: '100%', height: '9vh'}}>
+        <AppBar style={{position: 'absolute'}}>
           <Toolbar>
             <IconButton onClick={this.handleOpenDrawer} color="inherit" aria-label="Menu"><Menu/></IconButton>
-            <Typography variant="title" color="inherit">
-              BikeMode
-            </Typography>
+            <Link to='/' style={{color: 'white', textDecoration: 'none'}}>
+                <Typography variant="title" color="inherit">
+                BikeMode
+                </Typography>
+            </Link>
           </Toolbar>
         </AppBar>
         <Drawer

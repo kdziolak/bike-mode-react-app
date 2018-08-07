@@ -7,16 +7,23 @@ class WorkoutsResultsTable extends Component {
     constructor(){
         super();
         this.state ={
+            tripId: '',
             redirect: false
         }
         
     }
 
 
-    handleClick = () => {
-        this.setState({
-            redirect: true
+    handleClick = (e) => {
+        this.props.workoutsData.map(el => {
+            if(e.target.classList.contains(el.tripId)){
+                this.setState({
+                    tripID: el.tripId,
+                    redirect: true
+                })
+            }
         })
+        
     }
 
 
@@ -44,11 +51,11 @@ class WorkoutsResultsTable extends Component {
 
         if(this.props.dateValue === 'allDates' && props.dateWorkout.date !== undefined){
             return (
-                <TableRow key={i} onClick={this.handleClick}>
-                    <TableCell>
+                <TableRow key={i} className={props.tripId} onClick={this.handleClick}>
+                    <TableCell className={props.tripId}>
                         {props.dateWorkout.date}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={props.tripId}>
                         {
                             (()=>{
                                 if(this.props.tripData === 'speed') return speed;
@@ -57,20 +64,19 @@ class WorkoutsResultsTable extends Component {
                             })()
                         }
                     </TableCell>
-                    {this.state.redirect ? <Redirect to={`/wyniki-treningow/trening/${props.tripId}`} /> : null}
+                    {this.state.redirect ? <Redirect to={`/wyniki-treningow/trening/${this.state.tripID}`} /> : null}
                 </TableRow>
 
             );
         }
 
         if(!props.dateWorkout.date || (this.props.dateValue !== '' && this.props.dateValue !== props.dateWorkout.date) ) return;
-        
         return (
-            <TableRow key={i} onClick={this.handleClick}>
-                <TableCell>
+            <TableRow key={i} className={props.tripId} onClick={this.handleClick}>
+                <TableCell className={props.tripId}>
                     {props.dateWorkout.date}
                 </TableCell>
-                <TableCell>
+                <TableCell className={props.tripId}>
                 {
                     (()=>{
                         if(this.props.tripData === 'speed') return speed;
@@ -79,7 +85,7 @@ class WorkoutsResultsTable extends Component {
                     })()
                 }
                 </TableCell>
-                {this.state.redirect ? <Redirect to={`/wyniki-treningow/trening/${props.tripId}`} /> : null}
+                {this.state.redirect ? <Redirect to={`/wyniki-treningow/trening/${this.state.tripID}`} /> : null}
             </TableRow>
 
         );

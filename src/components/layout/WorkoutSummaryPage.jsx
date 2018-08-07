@@ -7,7 +7,7 @@ import WorkoutSummaryButtons from '../logic/WorkoutSummaryButtons'
 
 const WorkoutSummaryPage = () => {
     return (
-        <Grid container spacing={16} style={{marginTop: '12vh'}}>
+        <Grid container spacing={16} style={{marginTop: '5vh'}}>
             <Grid item xs={12}>
                 <Typography variant='title' style={{fontSize: '25px'}} align='center'>
                     <strong> Posumowanie treningu.</strong>
