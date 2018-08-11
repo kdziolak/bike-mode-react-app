@@ -82,11 +82,11 @@ class WorkoutSummaryCards extends Component {
 
     }
    render(){
-       if(this.props.measurementPoint == false){
-           return(
-               <Redirect to='/rozpocznij-trening' />
-           );
-       }
+    //    if(this.props.measurementPoint == false){
+    //        return(
+    //            <Redirect to='/rozpocznij-trening' />
+    //        );
+    //    }
         return (
             <Grid container spacing={16} style={{marginTop: '2vh'}}>
                  {this.state.cardsValue.map(this.showCards)}
