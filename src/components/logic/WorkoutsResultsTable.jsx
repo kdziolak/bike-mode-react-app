@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
+import { getDataFromDatabase,clearDataAfterUnmount } from '../../actions/workoutsResultsActions'
 import {Table, TableBody, TableCell, TableRow, TableHead, Paper, CircularProgress} from '@material-ui/core';
 import {Redirect} from 'react-router-dom';
 
@@ -11,6 +12,12 @@ class WorkoutsResultsTable extends Component {
             redirect: false
         }
         
+    }
+    componentWillMount(){
+        this.props.clearDataAfterUnmount();
+    }
+    componentWillUnmount() {
+        this.props.clearDataAfterUnmount();
     }
 
 
@@ -134,4 +141,11 @@ const mapStateToProps = state => {
     }
   }
 
-  export default connect(mapStateToProps, null)(WorkoutsResultsTable);
+  const mapDispatchToProps = dispatch => {
+      return {
+          clearDataAfterUnmount: () => dispatch(clearDataAfterUnmount()),
+          getDataFromDatabase: () => dispatch(getDataFromDatabase())
+      }
+  }
+
+  export default connect(mapStateToProps, mapDispatchToProps)(WorkoutsResultsTable);

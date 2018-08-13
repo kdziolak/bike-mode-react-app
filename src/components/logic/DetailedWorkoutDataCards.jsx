@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { getDataFromDatabase } from '../../actions/workoutsResultsActions'
+import {getDataFromDatabase, clearDataAfterUnmount} from '../../actions/workoutsResultsActions'
 import {CardContent, Typography} from '@material-ui/core'
 
 class DetailedWorkoutDataCards extends Component {
 
-    componentDidMount() {
+    componentWillMount(){
+        this.props.clearDataAfterUnmount();
         this.props.getDataFromDatabase();
     }
-     
+    componentWillUnmount() {
+        this.props.clearDataAfterUnmount();
+    }
+
   render() {
     return (
         <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems:'center', justifyContent: 'center'}}>
@@ -22,11 +26,12 @@ class DetailedWorkoutDataCards extends Component {
             </Typography>
         </CardContent>
     );
-  }
+  } 
 }
 
 
 const mapStateToProps = state => {
+    console.log(state.resultsWorkout)
     return {
         measurementPoint: state.resultsWorkout,
         index: state.resultsWorkout.index
@@ -34,9 +39,9 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        getDataFromDatabase: () => dispatch(getDataFromDatabase())
+        getDataFromDatabase: () => dispatch(getDataFromDatabase()),
+        clearDataAfterUnmount: () => dispatch(clearDataAfterUnmount())
     }
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(DetailedWorkoutDataCards);
 

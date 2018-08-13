@@ -17,7 +17,6 @@ class DetailedWorkoutDataMap extends Component {
         this.props.getDataFromDatabase();
     }
 
-
     showMarkers = (elem,i, el) => {
         return (
             <Marker key={i} position={elem}>
@@ -58,7 +57,7 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        getDataFromDatabase: () => dispatch(getDataFromDatabase())
+        getDataFromDatabase: () => dispatch(getDataFromDatabase()),
     }
 }
 
