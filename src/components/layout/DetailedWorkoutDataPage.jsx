@@ -10,7 +10,7 @@ const DetailedWorkoutDataPage = (props) => {
                 <DetailedWorkoutDataMap paramsId={props.match.params.id}/>
             </Grid>
             <Grid item xs={12}>
-                <DetailedWorkoutDataCards />
+                <DetailedWorkoutDataCards paramsId={props.match.params.id}/>
             </Grid>
         </Grid> 
     );

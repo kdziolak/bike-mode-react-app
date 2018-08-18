@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { getDataFromDatabase } from '../../actions/workoutsResultsActions'
+import { getDataFromDatabase,clearDataAfterUnmount } from '../../actions/workoutsResultsActions'
 import {Map, Marker,TileLayer, Popup} from 'react-leaflet';
 
 class DetailedWorkoutDataMap extends Component {
@@ -8,12 +8,13 @@ class DetailedWorkoutDataMap extends Component {
         super(props);
 
         this.state={
-            paramsID: props.paramsId
+            paramsID: props.paramsId,
         }
 
     }
 
     componentDidMount(){
+        this.props.clearDataAfterUnmount();
         this.props.getDataFromDatabase();
     }
 
@@ -58,6 +59,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         getDataFromDatabase: () => dispatch(getDataFromDatabase()),
+        clearDataAfterUnmount: () => dispatch(clearDataAfterUnmount())
     }
 }
 
