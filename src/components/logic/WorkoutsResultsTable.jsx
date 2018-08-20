@@ -13,8 +13,8 @@ class WorkoutsResultsTable extends Component {
         }
         
     }
-    componentWillMount(){
-        this.props.clearDataAfterUnmount();
+    componentDidMount(){
+        this.props.getDataFromDatabase();
     }
     componentWillUnmount() {
         this.props.clearDataAfterUnmount();

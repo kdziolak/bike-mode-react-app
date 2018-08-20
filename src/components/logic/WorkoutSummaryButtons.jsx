@@ -22,7 +22,15 @@ class WorkoutSummaryButtons extends Component {
     return (
     <div style={{display: 'flex', flexDirection: 'column', alignContent: 'center', marginTop: '3vh'}}>
         <Button variant='contained' color='primary' onClick={this.handleSave}>Zapisz trening</Button>
-        {this.state.redirect ? <Redirect to='/wyniki-treningow' /> : null }
+        {(() => {
+          if(this.state.redirect){
+            this.setState({redirect: false});
+            return(
+              <Redirect to='/wyniki-treningow'></Redirect>
+            );
+          }
+          return null;
+        })()}
         <br/>
         <Link to="/" style={{width: '100%', textDecoration: 'none'}}>
           <Button variant='contained' color='secondary' style={{width: '100%'}}>Zakoncz bez zapisywania</Button>
@@ -36,13 +44,12 @@ const mapStateToProps = state => {
   return {
       measurementPoint: state.summaryWorkout.measurementPoint,
       mapPositions: state.summaryWorkout.mapPositions,
-      index: state.summaryWorkout.index
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return{
-    saveToDatabase: (mesurement, positions) => dispatch(saveToDatabase(mesurement, positions))
+    saveToDatabase: (mesurement, positions) => saveToDatabase(mesurement, positions)
   }
 }
 
