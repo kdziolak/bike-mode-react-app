@@ -25,7 +25,7 @@ export function saveToDatabase (tripData, mapPositions){
     let day = date.getDate();
     let year = date.getFullYear();
     let hours = date.getHours();
-    let minutes = date.getMinutes();
+    let minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
     switch(month){
         case 0:{
             month = 'styczeń'

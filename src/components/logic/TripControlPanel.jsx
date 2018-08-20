@@ -22,7 +22,7 @@ class TripControlPanel extends Component {
                 minutes: 0,
                 hours: 0
             },
-            distancePassed: 20,
+            distancePassed: 500,
             measurementPoint: [],
             changeBtn: true,
             pauza: false,
@@ -33,6 +33,22 @@ class TripControlPanel extends Component {
     
     finishWorkout = () => {
         new Promise((response, reject) => {
+            let averageSpeed = Math.round(((this.state.distance / 1000) / (this.state.speedTime / 3600))*100) / 100;
+                let serializedTime = Math.round((this.state.speedTime / 60000 - (this.state.serializedTime ? this.state.serializedTime : 0))*100) / 100;
+                this.setState({
+                    distancePassed: (this.state.distancePassed +500),
+                    measurementPoint: [
+                        ...this.state.measurementPoint,
+                        {
+                            time: `${this.state.getTime.hours < 10 ? ('0' + this.state.getTime.hours) : this.state.getTime.hours }:${this.state.getTime.minutes < 10 ? ('0' + this.state.getTime.minutes) : this.state.getTime.minutes }:${this.state.getTime.seconds < 10 ? ('0' + this.state.getTime.seconds) : this.state.getTime.seconds }`,
+                            distance: this.state.distance,
+                            averageSpeed: averageSpeed ? averageSpeed : 0,
+                            serializedTime: serializedTime
+                        }
+                    ],
+                    mapPointsPosition: [...this.state.mapPointsPosition, this.state.position]
+                })
+                this.props.sendMarkersToMap(this.state.distance, this.state.position)
             response(this.setState({
                         pauza: true
                     }))
@@ -70,19 +86,20 @@ class TripControlPanel extends Component {
                         );
             this.setState({
                 position: [pos.coords.latitude, pos.coords.longitude],
-                distance: (Math.round((this.state.distance+dist) * 100)/100) + 10
+                distance: (Math.round((this.state.distance+dist) * 100)/100)
             })
-            if(this.state.distance >= this.state.distancePassed || this.state.distance <= 1){
+            if(this.state.distance >= this.state.distancePassed || (this.state.getTime.seconds === 0 && this.state.getTime.minutes===0)){
                 let averageSpeed = Math.round(((this.state.distance / 1000) / (this.state.speedTime / 3600))*100) / 100;
+                let serializedTime = Math.round((this.state.speedTime / 60000 - (this.state.serializedTime ? this.state.serializedTime : 0))*100) / 100;
                 this.setState({
-                    distancePassed: (this.state.distancePassed + 10),
+                    distancePassed: (this.state.distancePassed + 500),
                     measurementPoint: [
                         ...this.state.measurementPoint,
                         {
                             time: `${this.state.getTime.hours < 10 ? ('0' + this.state.getTime.hours) : this.state.getTime.hours }:${this.state.getTime.minutes < 10 ? ('0' + this.state.getTime.minutes) : this.state.getTime.minutes }:${this.state.getTime.seconds < 10 ? ('0' + this.state.getTime.seconds) : this.state.getTime.seconds }`,
                             distance: this.state.distance,
                             averageSpeed: averageSpeed ? averageSpeed : 0,
-                            serializedTime: (this.state.speedTime / 60000 - (this.state.serializedTime ? this.state.serializedTime : 0))
+                            serializedTime: serializedTime
                         }
                     ],
                     mapPointsPosition: [...this.state.mapPointsPosition, this.state.position]
