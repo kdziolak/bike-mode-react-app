@@ -36,11 +36,7 @@ class TripControlPanel extends Component {
             let averageSpeed = Math.round(((this.state.distance / 1000) / (this.state.speedTime / 3600))*100) / 100;
                 let serializedTime = Math.round((this.state.speedTime / 60000 - (this.state.serializedTime ? this.state.serializedTime : 0))*100) / 100;
                 this.setState({
-<<<<<<< HEAD
                     distancePassed: (this.state.distancePassed +500),
-=======
-                    distancePassed: (this.state.distancePassed + 10),
->>>>>>> 69f089458d4a1f4c5c9dfe03b57f778e1e9ffe0c
                     measurementPoint: [
                         ...this.state.measurementPoint,
                         {
@@ -117,7 +113,7 @@ class TripControlPanel extends Component {
 
     distance = (lon1, lat1, lon2, lat2) => {
         if (typeof(Number.prototype.toRad) === "undefined") {
-            Number.prototype.toRad = function() {
+            Number.prototype.toRad = function() { 
               return this * Math.PI / 180;
             }
           }

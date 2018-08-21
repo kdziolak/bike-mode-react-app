@@ -13,7 +13,8 @@ class WorkoutsResultsTable extends Component {
         }
         
     }
-    componentDidMount(){
+    componentWillMount(){
+        this.props.clearDataAfterUnmount();
         this.props.getDataFromDatabase();
     }
     componentWillUnmount() {
@@ -136,6 +137,7 @@ const mapStateToProps = state => {
     return{
         workoutsData: state.resultsWorkout,
         dateValue: state.filterData.dateValue,
+        timeValue : state.filterData.time,
         tripData: state.filterData.tripData
 
     }

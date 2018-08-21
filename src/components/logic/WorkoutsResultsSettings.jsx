@@ -13,7 +13,8 @@ class WorkoutsResultsSettings extends Component {
             dataToFilter: {
                 radioValue: 'speed',
                 dateValue: 'allDates'
-            }
+            },
+            dateValue: ''
         }
     }
     componentDidMount(){
@@ -48,10 +49,14 @@ class WorkoutsResultsSettings extends Component {
     }
 
     showDate = (props, i) =>{
-        if (i === 0) return <MenuItem key={i} value={"allDates"}>wszystkie dni</MenuItem>
+        if (i === 0){
+            dateValue = props.dateWorkout.date
+            return <MenuItem key={i} value={"allDates"}>wszystkie dni</MenuItem>;
+        } 
         return(
-            <MenuItem key={i} value={props.dateWorkout.date}>dzień: {props.dateWorkout.date}, godzina: {props.dateWorkout.time}</MenuItem>
+            <MenuItem key={i} value={props.dateWorkout.date}>dzień: {props.dateWorkout.date}</MenuItem>
         );
+
     }
 
     // showOptions = (props, i) =>{
@@ -107,6 +112,7 @@ class WorkoutsResultsSettings extends Component {
                         Data treningu
                     </InputLabel>
                     <Select
+                        className="select-date"
                         value={this.props.date} 
                         onChange={this.dateChange}>
                         {this.props.workoutsData.map(this.showDate)}
@@ -136,7 +142,6 @@ class WorkoutsResultsSettings extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log(state.filterData.date)
     return{
         workoutsData: state.resultsWorkout,
         date: state.filterData.dateValue,
