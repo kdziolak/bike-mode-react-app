@@ -50,7 +50,6 @@ class WorkoutsResultsSettings extends Component {
 
     showDate = (props, i) =>{
         if (i === 0){
-            dateValue = props.dateWorkout.date
             return <MenuItem key={i} value={"allDates"}>wszystkie dni</MenuItem>;
         } 
         return(
