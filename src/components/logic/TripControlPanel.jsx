@@ -317,11 +317,6 @@ class TripControlPanel extends Component {
   }
 }
 
-const mapStateToProps = state => {
-    return {
-        
-    }
-}
 const mapDispatchToProps = dispatch => {
     return {
         sendMarkersToMap: (distance, position) => dispatch(sendMarkersToMap(distance, position)),
@@ -329,4 +324,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TripControlPanel);
+export default connect(null, mapDispatchToProps)(TripControlPanel);
